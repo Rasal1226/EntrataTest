@@ -10,6 +10,7 @@ This project contains automated tests for Entrata final. It utilizes Selenium an
   1. Handling WebElement using Action Class
   2. Navigating to Watch Demo Webpage and Hanlding Form Without Submission
   3. navigation  to Resources Page Elements and Capture Screenshot of Whole Page using JavaScript Executor
+  4. HNDLE Multiple window and cookies on page and return WindowId and title
 
 ** Setup
 
