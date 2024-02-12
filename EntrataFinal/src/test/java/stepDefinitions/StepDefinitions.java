@@ -50,7 +50,9 @@ public class StepDefinitions {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         // Navigate to a specific URL
         driver.get("https://www.entrata.com/");
-        er.clickDeclineButtonIfAvailable(hp.decline);
+        // Set a short timeout for dynamic wait
+
+
 
 
     }
@@ -66,14 +68,14 @@ public class StepDefinitions {
 
         try {
             // Explicitly wait for the product link to be clickable
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Wait for a maximum of 10 seconds
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20)); // Wait for a maximum of 10 seconds
             WebElement productLink = wait.until(ExpectedConditions.elementToBeClickable(hp.product));
 
             // Click on the product link
             productLink.click();
 
 
-            WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10)); // Wait for a maximum of 10 seconds
+            WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(20)); // Wait for a maximum of 10 seconds
             WebElement marketingAndLeasing = wait1.until(ExpectedConditions.elementToBeClickable(hp.marketingAndLeasingLink));
             marketingAndLeasing.click();
 
@@ -106,7 +108,7 @@ public class StepDefinitions {
         hp.emailId.sendKeys(email);
         hp.phoneNO.sendKeys(phone);
         hp.Company.sendKeys(companyName);
-        hp.selectUnitCountByValue("uid");
+        hp.selectUnitCountByValue("1 - 10");
         hp.title.sendKeys(jobTitle);
     }
 
@@ -164,7 +166,25 @@ public class StepDefinitions {
         System.out.println("Window ID after clicking the button: " + win2);
         System.out.println("Title of signin window is :" + driver.getTitle());
 
-        er.clickDeclineButtonIfAvailable(hp.decline);
+        try {
+            // Attempt to find the Decline button
+            WebElement declineButton = hp.decline;
+
+            // If the button is found, click on it
+            if (declineButton.isDisplayed()) {
+                declineButton.click();
+                System.out.println("Clicked on Decline button.");
+            } else {
+                // If the button is not found, log a message and continue with execution
+                System.out.println("Decline button is not available, so it was not clicked.");
+            }
+        } catch (NoSuchElementException e) {
+            // If the button is not found, log a message and continue with execution
+            System.out.println("Decline button is not available, so it was not clicked.");
+        }
+
+// Reset implicit wait after handling the cookie
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         hp.Clientlogin.click();
 
         String win3 = driver.getWindowHandle();
