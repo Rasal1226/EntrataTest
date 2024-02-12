@@ -27,8 +27,19 @@ Feature: Sample Feature
 		| Entrata_navigation_snap |
 		| screenshot              |
 
-
+@test4
 	Scenario: Navigate to a new window and return to the main window
 		Given User is on Entrata application
 		When User navigated to login window
 		Then User returns to the main window
+
+	@test5
+	Scenario Outline: Resident Login window
+		Given User is on Entrata application
+		When User navigated to  residentPortal LoginButton
+		And user fills contact information "<Name>", "<Email>", "<PropertyName>", "<PropertyURL>", "<Category>", and "<Message>"
+		Then Cpture Title of the residentPortal
+
+		Examples:
+			| Name    | Email             | PropertyName | PropertyURL          | Category | Message |
+			| Roshani | roshani@gmail.com | College      | www.apna.college.com | Payments | Hello   |

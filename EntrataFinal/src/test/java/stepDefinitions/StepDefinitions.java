@@ -191,11 +191,62 @@ public class StepDefinitions {
         System.out.println("Window ID after clicking the button: " + win3);
         System.out.println("Title of client window is :" + driver.getTitle());
 
+
+
     }
 
     @Then("User returns to the main window")
     public void userReturnsToTheMainWindow() {
 
         Assert.assertEquals("Expected number of windows is not met", 1, driver.getWindowHandles().size());
+    }
+
+    @When("User navigated to  residentPortal LoginButton")
+    public void userNavigatedToResidentPortalLoginButton() {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        hp.signIn.click();
+        try {
+            // Attempt to find the Decline button
+            WebElement declineButton = hp.decline;
+
+            // If the button is found, click on it
+            if (declineButton.isDisplayed()) {
+                declineButton.click();
+                System.out.println("Clicked on Decline button.");
+            } else {
+                // If the button is not found, log a message and continue with execution
+                System.out.println("Decline button is not available, so it was not clicked.");
+            }
+        } catch (NoSuchElementException e) {
+            // If the button is not found, log a message and continue with execution
+            System.out.println("Decline button is not available, so it was not clicked.");
+        }
+        hp.residentPortalLoginButton.click();
+
+        hp.websitersportal.click();
+     //   hp.contact.click();
+
+    }
+
+    @And("user fills contact information {string}, {string}, {string}, {string}, {string}, and {string}")
+    public void userFillsContactInformationAnd(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
+hp.Name.sendKeys(arg0);
+hp.Email.sendKeys(arg1);
+hp.propertyName.sendKeys(arg2);
+hp.propertyURL.sendKeys(arg3);
+hp.selectCategoryByValue(arg4);
+hp.message.sendKeys(arg5);
+    }
+
+    @Then("Cpture Title of the residentPortal")
+    public void cptureTitleOfTheResidentPortal() {
+
+        driver.getTitle();
+        Assert.assertFalse("Name field is empty", hp.Name.getAttribute("value").isEmpty());
+        Assert.assertFalse("Email field is empty", hp.Email.getAttribute("value").isEmpty());
+        Assert.assertFalse("Property Name field is empty", hp.propertyName.getAttribute("value").isEmpty());
+        Assert.assertFalse("Property URL field is empty", hp.propertyURL.getAttribute("value").isEmpty());
+       Assert.assertFalse("Message field is empty", hp.message.getAttribute("value").isEmpty());
+
     }
 }

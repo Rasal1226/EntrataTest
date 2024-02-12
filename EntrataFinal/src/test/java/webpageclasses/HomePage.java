@@ -23,9 +23,17 @@ public class HomePage {
 	public WebElement signIn;
 	@FindBy(xpath = "//a[contains(@href, 'sso.entrata')]")
 	public WebElement Clientlogin;
-	//cta-link-default dark-cta-link banner-link
+	//By.xpath("//a[@class='cta-link-default dark-cta-link banner-link' and @title='Resident Portal Login Button']"));
+@FindBy(xpath = "//a[@class='cta-link-default dark-cta-link banner-link' and @title='Resident Portal Login Button']")
+public WebElement residentPortalLoginButton;
 
-	@FindBy(id = "FirstName")
+@FindBy(xpath = "//a[@href=\"#app-contact\"]")
+public WebElement contact;
+
+
+	@FindBy(xpath = "//div[@class='start-button website-button']")
+	public WebElement websitersportal;
+@FindBy(id = "FirstName")
 	public WebElement firstName;
 
 	@FindBy(id = "LastName")
@@ -65,6 +73,22 @@ public class HomePage {
 	@FindBy(xpath = "//*[@id='gatsby-focus-wrapper']/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/a[1]")
 	public WebElement Resources;
 
+	@FindBy(id = "name")
+	public WebElement Name;
+	@FindBy(id = "email")
+	public WebElement Email;
+	@FindBy(id = "property_name")
+	public WebElement propertyName;
+	@FindBy(id = "property_url")
+	public WebElement propertyURL;
+	@FindBy(id = "category")
+    public WebElement category;
+
+	@FindBy(id = "message")
+	public WebElement message;
+
+
+
 
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
@@ -75,6 +99,11 @@ public class HomePage {
 
 	public void selectUnitCountByValue(String value) {
 		Select dropdown = new Select(Ucount);
+		dropdown.selectByValue(value);
+	}
+
+	public void selectCategoryByValue(String value) {
+		Select dropdown = new Select(category);
 		dropdown.selectByValue(value);
 	}
 
