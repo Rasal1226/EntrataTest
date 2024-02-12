@@ -2,7 +2,7 @@ Feature: Sample Feature
 
 
 	@test1
-	Scenario: Checlk product and Marketing page
+	Scenario: Check product and Marketing page
 		Given User is on Entrata application
 	    When User clicks on product
 		Then User is navigated to Marketing and Leasing page successfully
@@ -26,3 +26,9 @@ Feature: Sample Feature
 	     Examples:
 		| Entrata_navigation_snap |
 		| screenshot              |
+
+
+	Scenario: Navigate to a new window and return to the main window
+		Given User is on Entrata application
+		When User navigated to login window
+		Then User returns to the main window
