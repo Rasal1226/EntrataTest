@@ -23,7 +23,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfWindowsToBe;
 
 
 public class StepDefinitions {
@@ -43,10 +46,11 @@ public class StepDefinitions {
         // Maximize the browser window
         driver.manage().window().maximize();
         hp = new HomePage(driver);
-        er=new Entrata();
+        er = new Entrata();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         // Navigate to a specific URL
         driver.get("https://www.entrata.com/");
+        er.clickDeclineButtonIfAvailable(hp.decline);
 
 
     }
@@ -102,7 +106,7 @@ public class StepDefinitions {
         hp.emailId.sendKeys(email);
         hp.phoneNO.sendKeys(phone);
         hp.Company.sendKeys(companyName);
-        hp.selectUnitCountByValue("1 - 10");
+        hp.selectUnitCountByValue("uid");
         hp.title.sendKeys(jobTitle);
     }
 
@@ -112,7 +116,7 @@ public class StepDefinitions {
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshot, new File(".\\src\\test\\screenshot\\screenshot.png"));
 
-            File screenshotFile = new File("filled_form_page_screenshot.png");
+
             Assert.assertTrue("Screenshot file does not exist", screenshot.exists());
             System.out.println("Screenshot file exists.");
 
@@ -120,6 +124,7 @@ public class StepDefinitions {
             System.out.println("Failed to capture screenshot: " + e.getMessage());
         }
     }
+
     @After
     public void closeBrowser() {
         if (driver != null) {
@@ -136,9 +141,41 @@ public class StepDefinitions {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='gatsby-focus-wrapper']/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/a[1]")));
 
-       er.screenshot(driver,"Resources",Entrata_navigation_snap);
-        Assert.assertTrue("Resources link is clickable",  hp.Resources.isDisplayed());
+        er.screenshot(driver, "Resources", Entrata_navigation_snap);
+        Assert.assertTrue("Resources link is not clickable", hp.Resources.isDisplayed());
 
     }
 
+
+    @When("User navigated to login window")
+    public void userClicksOnTheLink() {
+
+        // Set implicit wait
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        String win1 = driver.getWindowHandle();
+        System.out.println("Window ID before clicking the button: " + win1);
+
+// Click signin button
+        hp.signIn.click();
+
+// Get the window handle of the main window after clicking the sign in
+        String win2 = driver.getWindowHandle();
+        System.out.println("Window ID after clicking the button: " + win2);
+        System.out.println("Title of signin window is :" + driver.getTitle());
+
+        er.clickDeclineButtonIfAvailable(hp.decline);
+        hp.Clientlogin.click();
+
+        String win3 = driver.getWindowHandle();
+        System.out.println("Window ID after clicking the button: " + win3);
+        System.out.println("Title of client window is :" + driver.getTitle());
+
+    }
+
+    @Then("User returns to the main window")
+    public void userReturnsToTheMainWindow() {
+
+        Assert.assertEquals("Expected number of windows is not met", 1, driver.getWindowHandles().size());
+    }
 }
